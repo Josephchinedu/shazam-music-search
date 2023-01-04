@@ -117,3 +117,15 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/goland
 
 app.env
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+.veenv
+env/
+veenv/
