@@ -26,8 +26,6 @@ func MusicSearch(songTitle string) ([]byte, error) {
 
 	apiKey := config.RapidApiKey
 
-	fmt.Println("apiKey:", apiKey)
-
 	req.Header.Add("X-RapidAPI-Key", apiKey)
 	req.Header.Add("X-RapidAPI-Host", "shazam.p.rapidapi.com")
 
@@ -47,7 +45,7 @@ func MusicSearch(songTitle string) ([]byte, error) {
 
 	defer res.Body.Close()
 
-	// fmt.Println(res)
+	// fmt.Println(string(responseData))
 	// fmt.Println(string(body))
 
 	// fmt.Println("responseData:", string(responseData))
@@ -750,4 +748,37 @@ func MusicSearch(songTitle string) ([]byte, error) {
 	// 	}
 	//  }
 
+}
+
+func GetTotalStream(musicKey string) ([]byte, error) {
+	baseURL := "https://shazam.p.rapidapi.com"
+	resource := "/songs/get-count"
+
+	params := url.Values{}
+	params.Add("key", musicKey)
+
+	config, _ := initializers.LoadConfig(".")
+
+	// Create the URL
+	u, _ := url.Parse(baseURL + resource)
+	u.RawQuery = params.Encode()
+
+	req, _ := http.NewRequest("GET", u.String(), nil)
+
+	apiKey := config.RapidApiKey
+
+	req.Header.Add("X-RapidAPI-Key", apiKey)
+	req.Header.Add("X-RapidAPI-Host", "shazam.p.rapidapi.com")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	responseData, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		return []byte(""), err
+	}
+
+	defer res.Body.Close()
+
+	return responseData, nil
 }
